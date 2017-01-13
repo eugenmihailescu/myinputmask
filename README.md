@@ -1,16 +1,17 @@
 # my-input-mask
 Input mask plugin for JavaScript
 
-A lightweight plugin (only 2K minimized) that adds input mask functionality to the HTML inputs elements.
+A lightweight WYSIWYG plugin (only 2K minimized) that adds input mask functionality to the HTML inputs elements.
 
 ## Features
-- formats the input value as defined by input's mask (see `mask`)
-- accepts only the char class given by pattern (see `pattern`)
-- limits the length of input value by using the mask length (see `strict` attribute)
-- without
+- formats multiple inputs at once (via selector) as per input's mask definition (see `mask`)
+- inputs accept only chars withing a specified range|pattern (see `pattern`)
+- limits the length of input value by the mask length (see `strict` attribute)
+- supports almost all editor functional keys (navigational keys, functional keys, etc)
+- lightweight (2K minimized, ie. 300 lines of formatted source including comments)
  
 ## Requirements
-+ JavaScript capable browser (eg. IE9+, FF, Chrome, Opera, etc)
++ JavaScript capable browser (eg. IE9+, FF4, Chrome5, Opera12, Safari5)
 
 ## How it works
 The plugin class is a JavaScript function called `InputMask` which when executed it binds some key events (eg. keydown, keyup) to the configured/given input elements and that's it!
