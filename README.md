@@ -9,6 +9,8 @@ A lightweight WYSIWYG plugin (only 2K minimized) that adds input mask functional
 - limits the length of input value by the mask length (see `strict` attribute)
 - supports almost all editor functional keys (navigational keys, functional keys, etc)
 - lightweight (2K minimized, ie. 300 lines of formatted source including comments)
+- JSLint compliant
+- supports full code minimification without breaking its functionality (see Google's [closure-compiler](http://closure-compiler.appspot.com/home)) 
  
 ## Requirements
 + JavaScript capable browser (eg. IE9+, FF4, Chrome5, Opera12, Safari5)
