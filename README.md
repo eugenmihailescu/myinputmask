@@ -16,7 +16,7 @@ A lightweight WYSIWYG plugin (only 2K minimized) that adds input mask functional
 + JavaScript capable browser (eg. IE9+, FF4, Chrome5, Opera12, Safari5)
 
 ## How it works
-The plugin class is a JavaScript function called `InputMask` which when executed it binds some key events (eg. keydown, keyup) to the configured/given input elements and that's it!
+The plugin class is a JavaScript function called `InputMask` which binds some key events (eg. keydown, keyup) to the configured/given input elements. And that's it!
 
 To tell the function what are your inputs and how to mask them it accepts a configuration object as first argument with the following definition:
 ```javascript

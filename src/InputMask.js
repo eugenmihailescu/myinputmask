@@ -27,6 +27,19 @@ function InputMask(config) {
     var NAV_KEYS = [ "Shift", "Control", "Home", "End", "ArrowLeft", "ArrowRight", "CapsLock", KEY_DEL, KEY_BKSP, KEY_TAB ];
 
     /**
+     * Populates the data with the default properties if not already existing
+     * 
+     * @prop data Object of data properties
+     */
+    function getDefaultData(data) {
+        data.mask = data.mask || '';
+        data.pattern = data.pattern || '.';
+        data.strict = data.strict || true;
+
+        return data;
+    }
+
+    /**
      * Get the caret position within the given input element
      * 
      * @param element
@@ -91,7 +104,7 @@ function InputMask(config) {
         }
 
         var elem = event.currentTarget;
-        var data = elem.dataset;
+        var data = getDefaultData(elem.dataset);
         var key = event.key;
         var caret_pos = getCaretPosition(elem);
 
@@ -131,7 +144,7 @@ function InputMask(config) {
      */
     function onKeyUp(event) {
         var elem = event.currentTarget;
-        var data = elem.dataset;
+        var data = getDefaultData(elem.dataset);
         var caret_pos = getCaretPosition(elem);
         var key = event.key;
         var string = elem.value;
@@ -180,7 +193,7 @@ function InputMask(config) {
     _this_.maskString = function(string) {
         var i;
         var elem = this;
-        var data = elem.dataset;
+        var data = getDefaultData(elem.dataset);
         var strict;
 
         strict = UNDEF === typeof strict ? true : strict;
@@ -223,7 +236,7 @@ function InputMask(config) {
     _this_.getUnmaskedValue = function() {
         var elem = this;
         var string = elem.value;
-        var data = elem.dataset;
+        var data = getDefaultData(elem.dataset);
         var strict = UNDEF === typeof data['strict'] ? true : data['strict'];
         var i;
 
@@ -256,7 +269,7 @@ function InputMask(config) {
     _this_.init = function() {
         // process all the inputs
         Object.keys(_this_.inputs).forEach(function(selector) {
-            var prop = _this_.inputs[selector];
+            var prop = getDefaultData(_this_.inputs[selector]);
             var selected_elements = document.querySelectorAll(selector);
 
             // add the keydown|keyup listeners to each selected item
