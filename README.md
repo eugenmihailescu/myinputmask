@@ -8,7 +8,7 @@ A lightweight WYSIWYG plugin (only 2K minimized) that adds input mask functional
 - inputs accept only chars withing a specified range|pattern (see `pattern`)
 - limits the length of input value by the mask length (see `strict` attribute)
 - supports almost all editor functional keys (navigational keys, functional keys, etc)
-- lightweight (2K minimized, ie. 300 lines of formatted source including comments)
+- lightweight (3K minimized, ie. 400 lines of formatted source including comments)
 - JSLint compliant
 - supports full code minimification without breaking its functionality (see Google's [closure-compiler](http://closure-compiler.appspot.com/home)) 
  
