@@ -77,6 +77,7 @@ will mask the input editor with Id `#my-selector` and any input with `type=tel`.
 ## Caveat Emptor
 1. When you'll read the input value you will find that its value includes also those mask separators that were introduced by the mask (not only the text that was physically entered by the end-user). That is something expected because the input value was physically altered by the plug-in. To overcome this you may read the input value using a special function (see `getUnmaskedValue`) provided by class
 2. The insert key will not work as in a regular editor (this may, however, be fixed in a future release).
+3. Does not support multiple masks for the same input which could vary based on different regex validation expressions (see card number which masks may differ for different card brands).
 
 ### How to retrieve the unmasked value
 Since the input value is masked by using a given mask/format you cannot read directly the DOM element's value and retrieve its unmasked value. However, there is a special function to deal with these situations: `getUnmaskedValue(input)` where `input` is the DOM input element for which you want to retrieve the unmasked value.
