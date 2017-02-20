@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>my-input-mask demo app</title>
+<style>
+label {
+	display: block;
+}
+</style>
+<script type="text/javascript" src="../src/InputMask.js"></script>
+</head>
+<body>
+	<h1>A minimalistic input mask plugin</h1>
+	<table>
+		<tr>
+			<td><label for="edt_date">Date</label><input type="text" id="edt_date" placeholder="dd/MM/yyyy"></td>
+			<td><label for="edt_time">Time</label><input type="text" id="edt_time" placeholder="hh:mm"></td>
+		</tr>
+		<tr>
+			<td><label for="edt_phone">Phone</label><input type="text" id="edt_phone" placeholder="001-123-456789"></td>
+			<td><label for="edt_zipcode">Zip code</label><input type="text" id="edt_zipcode" placeholder="12345"></td>
+		</tr>
+		<tr>
+			<td><label for="edt_number">Number</label><input type="text" id="edt_number" placeholder="000.00"></td>
+			<td><label for="edt_money">Money</label><input type="text" id="edt_money" placeholder="000,000.00"></td>
+		</tr>
+		<tr>
+			<td><label for="edt_percent">Percent</label><input type="text" id="edt_percent" placeholder="000%"></td>
+			<td><label for="edt_creditcard">Credit card</label><input type="text" id="edt_creditcard"
+				placeholder="0000 0000 0000 0000"></td>
+		</tr>
+	</table>
+	<script type="text/javascript">
+        new InputMask({
+            inputs : {
+                '#edt_date' : {
+                    mask : '__/__/____',
+                    strict : true,
+                    pattern : '[0-9]'
+                },
+                '#edt_time' : {
+                    mask : '__:__',
+                    strict : true,
+                    pattern : '[0-9]'
+                },
+                '#edt_phone' : {
+                    mask : '___-___-______',
+                    strict : true,
+                    pattern : '[0-9]'
+                },
+                '#edt_zipcode' : {
+                    mask : '_____',
+                    strict : true,
+                    pattern : '[0-9]'
+                },
+                '#edt_number' : {
+                    mask : '___.__',
+                    strict : true,
+                    pattern : '[0-9]'
+                },
+                '#edt_money' : {
+                    mask : '___,___.__',
+                    strict : true,
+                    pattern : '[0-9]'
+                },
+                '#edt_percent' : {
+                    mask : '___%',
+                    strict : true,
+                    pattern : '[0-9]'
+                },
+                '#edt_creditcard' : {
+                    mask : '____ ____ ____ ____',
+                    strict : true,
+                    pattern : '[0-9]'
+                }
+            },
+            mask_symbol : '_' // when underscore is used we can actually omit this parameter
+        });
+    </script>
+</body>
+</html>
