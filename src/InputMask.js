@@ -1,15 +1,16 @@
 /**
  * Adds input mask functionality to your HTML inputs elements.
- * @author Eugen Mihailescu
- * @url: https://github.com/eugenmihailescu/myinputmask
  * 
- * @param config
- *            An object with two properties: an list of input elements and optionally the mask symbol.
- * @returns Returns the object instance
- */
-/**
- * @param config
- * @returns
+ * @author Eugen Mihailescu <eugenmihailescux@gmail.com>
+ * @license {@link https://www.gnu.org/licenses/gpl-3.0.txt|GPLv3}
+ * @version 1.0
+ * 
+ * @class
+ * @since 1.0
+ * @param {Object}
+ *            config - An object with two properties: an list of input elements and optionally the mask symbol.
+ * 
+ * @returns {Object} - Returns the object instance
  */
 function InputMask(config) {
     "use strict";
@@ -17,7 +18,7 @@ function InputMask(config) {
     // /////////////////////////////
     // private properties
     // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    var _this_ = this;
+    var that = this;
     var inputs = config.inputs || {};
     var mask_symbol = config.mask_symbol || "_";
     var autoinit = config.autoinit || true;
@@ -30,7 +31,10 @@ function InputMask(config) {
     /**
      * Populates the data with the default properties if not already existing
      * 
-     * @prop data Object of data properties
+     * @since 1.0
+     * @param {Object}
+     *            data - Object of data properties
+     * @returns {Object} Returns the altered object
      */
     function getDefaultData(data) {
         data.mask = data.mask || "";
@@ -41,15 +45,16 @@ function InputMask(config) {
     }
 
     /**
-     * Select a given range within the current `_this_` element
+     * Select a given range within the current `that` element
      * 
-     * @param start
-     *            The starting index for selection
-     * @param end
-     *            The last index of selection
+     * @since 1.0
+     * @param {number}
+     *            start - The starting index for selection
+     * @param {number=}
+     *            end - The last index of selection
      */
     function selectRange(elem, start, end) {
-        if (end === _this_.UNDEF) {
+        if (end === that.UNDEF) {
             end = start;
         }
         if (elem.selectionStart) {
@@ -60,8 +65,8 @@ function InputMask(config) {
         } else if (elem.createTextRange) {
             var range = elem.createTextRange();
             range.collapse(true);
-            range.moveEnd(_this_.CHAR, end);
-            range.moveStart(_this_.CHAR, start);
+            range.moveEnd(that.CHAR, end);
+            range.moveStart(that.CHAR, start);
             range.select();
         }
     }
@@ -69,12 +74,14 @@ function InputMask(config) {
     /**
      * Get the caret position within the given input element
      * 
-     * @param element
-     *            The selection element
-     * @return The caret position within the given input element
+     * @since 1.0
+     * @param {Object=}
+     *            element - The selection HTML {@link https://developer.mozilla.org/en-US/docs/Web/API/Element|element}
+     * 
+     * @returns {number} - The caret position within the given input element
      */
     function getCaretPosition(element) {
-        if (_this_.UNDEF === typeof element) {
+        if (that.UNDEF === typeof element) {
             return false;
         }
 
@@ -85,7 +92,7 @@ function InputMask(config) {
             element.focus();
             var Sel = document.selection.createRange();
             var SelLength = document.selection.createRange().text.length;
-            Sel.moveStart(_this_.CHAR, -element.value.length);
+            Sel.moveStart(that.CHAR, -element.value.length);
             pos = Sel.text.length - SelLength;
         }
         return pos;
@@ -94,27 +101,35 @@ function InputMask(config) {
     /**
      * Move the input's caret to the specified position
      * 
-     * @param elem
-     *            The input element where the cares is moved
-     * @param position
-     *            The new position of the caret
+     * @since 1.0
+     * @param {Object}
+     *            elem - The input HTML {@link https://developer.mozilla.org/en-US/docs/Web/API/Element|element} where the
+     *            caret is moved
+     * @param {number}
+     *            position - The new position of the caret
      */
     function moveCaret(elem, position) {
         selectRange(elem, position, position);
     }
 
-    /*
-     * Reformat the input element @param elem The input element to reformat @param caret_pos If specified then moves the caret
-     * position to the given value
+    /**
+     * Reformat the input element
+     * 
+     * @since 1.0
+     * @param {Object}
+     *            elem - The input HTML {@link https://developer.mozilla.org/en-US/docs/Web/API/Element|element} which values
+     *            is (re)formatted
+     * @param {number=}
+     *            caret_pos - The new position of the caret, if specified
      */
     function format(elem, caret_pos) {
-        var unmasked = _this_.getUnmaskedValue(elem);
+        var unmasked = that.getUnmaskedValue(elem);
         var masked = maskString(elem, unmasked);
 
         elem.value = masked;
 
-        if (_this_.UNDEF !== typeof caret_pos) {
-            caret_pos = _this_.END === caret_pos ? masked.length : caret_pos;
+        if (that.UNDEF !== typeof caret_pos) {
+            caret_pos = that.END === caret_pos ? masked.length : caret_pos;
             moveCaret(elem, caret_pos);
         }
     }
@@ -122,8 +137,9 @@ function InputMask(config) {
     /**
      * Callback for the keydown keyboard event
      * 
-     * @param event
-     *            KeyboardEvent
+     * @since 1.0
+     * @param {Object}
+     *            event - The {@link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent|KeyboardEvent}
      */
     function onKeyDown(event) {
 
@@ -139,13 +155,13 @@ function InputMask(config) {
         var offset;
 
         // not in control & navigation keys
-        if (!(event.ctrlKey || event.shiftKey) && _this_.NAV_KEYS.indexOf(key) < 0) {
-            if (!new RegExp(data[_this_.pattern]).test(key)) {
+        if (!(event.ctrlKey || event.shiftKey) && that.NAV_KEYS.indexOf(key) < 0) {
+            if (!new RegExp(data[that.pattern]).test(key)) {
                 event.preventDefault();
             }
 
             // strict mode => don"t exceed the mask length
-            if (data[_this_.strict] === "true" && elem.value.length >= data[_this_.mask].length) {
+            if (data[that.strict] === "true" && elem.value.length >= data[that.mask].length) {
                 if (window.getSelection().rangeCount <= 1) {
                     event.preventDefault();
                 }
@@ -154,10 +170,10 @@ function InputMask(config) {
 
         // backspace near a mask separator
         if (false !== caret_pos) {
-            if (_this_.KEY_BKSP === key && data[_this_.mask][caret_pos - 1] !== mask_symbol) {
+            if (that.KEY_BKSP === key && data[that.mask][caret_pos - 1] !== mask_symbol) {
                 // try to eliminate all mask separators till the next valid char
                 offset = 0;
-                while (caret_pos && data[_this_.mask][caret_pos - 1] !== mask_symbol) {
+                while (caret_pos && data[that.mask][caret_pos - 1] !== mask_symbol) {
                     caret_pos -= 1;
                     offset += 1;
                 }
@@ -172,10 +188,10 @@ function InputMask(config) {
             }
 
             // delete near a mask separator
-            if (_this_.KEY_DEL === key && data[_this_.mask][caret_pos] !== mask_symbol) {
+            if (that.KEY_DEL === key && data[that.mask][caret_pos] !== mask_symbol) {
                 // try to eliminate all mask separators till the next valid char
                 offset = 0;
-                while (data[_this_.mask][caret_pos] !== mask_symbol) {
+                while (data[that.mask][caret_pos] !== mask_symbol) {
                     caret_pos += 1;
                     offset += 1;
                 }
@@ -190,9 +206,9 @@ function InputMask(config) {
             }
 
             // left arrow
-            if (_this_.KEY_LEFT === key && data[_this_.mask][caret_pos - 1] !== mask_symbol) {
+            if (that.KEY_LEFT === key && data[that.mask][caret_pos - 1] !== mask_symbol) {
                 offset = 0;
-                while (caret_pos && data[_this_.mask][caret_pos - 1] !== mask_symbol) {
+                while (caret_pos && data[that.mask][caret_pos - 1] !== mask_symbol) {
                     caret_pos -= 1;
                     offset += 1;
                 }
@@ -200,9 +216,9 @@ function InputMask(config) {
             }
 
             // right arrow
-            if (_this_.KEY_RIGHT === key && data[_this_.mask][caret_pos + 1] !== mask_symbol) {
+            if (that.KEY_RIGHT === key && data[that.mask][caret_pos + 1] !== mask_symbol) {
                 offset = 0;
-                while (caret_pos && data[_this_.mask][caret_pos + 1] !== mask_symbol) {
+                while (caret_pos && data[that.mask][caret_pos + 1] !== mask_symbol) {
                     caret_pos += 1;
                     offset += 1;
                 }
@@ -210,14 +226,15 @@ function InputMask(config) {
             }
         }
 
-        wait = _this_.NAV_KEYS.indexOf(key) < 0;
+        wait = that.NAV_KEYS.indexOf(key) < 0;
     }
 
     /**
      * Callback for the keyup keyboard event
      * 
-     * @param event
-     *            KeyboardEvent
+     * @since 1.0
+     * @param {Object}
+     *            event - The {@link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent|KeyboardEvent}
      */
     function onKeyUp(event) {
         var elem = event.currentTarget;
@@ -228,30 +245,30 @@ function InputMask(config) {
 
         // allow Ctrl-A and Ctrl-V
         if (event.ctrlKey) {
-            if (_this_.CTRL_FN_KEYS.indexOf(key) >= 0) {
-                if (_this_.PASTE_KEYS.indexOf(key) >= 0) {
-                    format(elem, _this_.END);
+            if (that.CTRL_FN_KEYS.indexOf(key) >= 0) {
+                if (that.PASTE_KEYS.indexOf(key) >= 0) {
+                    format(elem, that.END);
                 }
                 wait = false;
                 return;
             }
         } else if (event.shiftKey) {
             // allow shift-TAB
-            if (key === _this_.KEY_TAB) {
+            if (key === that.KEY_TAB) {
                 wait = false;
                 return;
             }
         } else {
-            if (_this_.NAV_KEYS.indexOf(key) < 0 && false !== caret_pos) {
+            if (that.NAV_KEYS.indexOf(key) < 0 && false !== caret_pos) {
                 // when the caret is positioned somewhere inside the string
                 if (caret_pos < string.length) {
-                    format(elem, _this_.END);
+                    format(elem, that.END);
                 }
 
                 // when the caret is positioned on the mask separator position advance the caret to the next mask symbol
                 var t = "";
-                while (caret_pos < data[_this_.mask].length && data[_this_.mask][caret_pos] !== mask_symbol) {
-                    t += data[_this_.mask][caret_pos];
+                while (caret_pos < data[that.mask].length && data[that.mask][caret_pos] !== mask_symbol) {
+                    t += data[that.mask][caret_pos];
                     caret_pos += 1;
                 }
                 if (t.length) {
@@ -265,20 +282,22 @@ function InputMask(config) {
     }
 
     /**
-     * Mask the given string by using the current `_this_` element mask definition
+     * Mask the given string by using the current `that` element mask definition
      * 
-     * @param elem
-     *            The DOM element which value is to be masked
-     * @param string
-     *            The string to mask
-     * @return Returns the masked string
+     * @since 1.0
+     * @param {Object}
+     *            elem - The HTML {@link https://developer.mozilla.org/en-US/docs/Web/API/Element|element} which value is to
+     *            be masked
+     * @param {string}
+     *            string - The string to mask
+     * @returns {string} - Returns the masked string
      */
     function maskString(elem, string) {
         var i;
         var data = getDefaultData(elem.dataset);
         var strict;
 
-        strict = _this_.UNDEF === typeof strict ? true : strict;
+        strict = that.UNDEF === typeof strict ? true : strict;
 
         var mask_count = 0;
         var offset = 0;
@@ -287,22 +306,22 @@ function InputMask(config) {
         var output = "";
 
         // the final string may include the mask separators
-        for (i = 0; !strict && i < data[_this_.mask].length; i += 1) {
-            offset += data[_this_.mask][i] !== mask_symbol ? 1 : 0;
+        for (i = 0; !strict && i < data[that.mask].length; i += 1) {
+            offset += data[that.mask][i] !== mask_symbol ? 1 : 0;
         }
 
-        for (i = 0; i < Math.max(string.length, data[_this_.mask].length) + offset; i += 1) {
-            if ((strict && i >= data[_this_.mask].length) || (i >= string.length + mask_count)) {
+        for (i = 0; i < Math.max(string.length, data[that.mask].length) + offset; i += 1) {
+            if ((strict && i >= data[that.mask].length) || (i >= string.length + mask_count)) {
                 break;
             }
-            if (i < data[_this_.mask].length && data[_this_.mask][i] !== mask_symbol) {
-                output += data[_this_.mask][i];
+            if (i < data[that.mask].length && data[that.mask][i] !== mask_symbol) {
+                output += data[that.mask][i];
                 mask_count += 1;
             } else {
                 if (head < string.length) {
                     output += string[head];
                 } else {
-                    output += data[_this_.mask][i];
+                    output += data[that.mask][i];
                     mask_count += 1;
                 }
                 head += 1;
@@ -314,6 +333,8 @@ function InputMask(config) {
 
     /**
      * Initialize the inputs for handling the mask events
+     * 
+     * @since 1.0
      */
     function init() {
         // process all the inputs
@@ -326,16 +347,16 @@ function InputMask(config) {
 
                 var elem = selected_elements[index];
 
-                // it seems there is another running instance that already attached to _this_ element
-                if (elem.getAttribute(_this_.plugin) === _this_.name) {
+                // it seems there is another running instance that already attached to that element
+                if (elem.getAttribute(that.plugin) === that.name) {
                     return;
                 }
 
                 var elem_data = {
-                    "mask" : prop[_this_.mask] || elem.getAttribute("placeholder"),
-                    "pattern" : prop[_this_.pattern] || elem.getAttribute(_this_.pattern),
-                    "strict" : prop[_this_.strict].toString(),
-                    "plugin" : _this_.name
+                    "mask" : prop[that.mask] || elem.getAttribute("placeholder"),
+                    "pattern" : prop[that.pattern] || elem.getAttribute(that.pattern),
+                    "strict" : prop[that.strict].toString(),
+                    "plugin" : that.name
                 };
                 // store the mask within element dataset
                 Object.keys(elem_data).forEach(function(p) {
@@ -359,22 +380,25 @@ function InputMask(config) {
     /**
      * Removes those chars that represents the mask
      * 
-     * @param elem
-     *            The DOM element which value is unmasked
+     * @since 1.0
+     * @param {Object}
+     *            elem - The HTML {@link https://developer.mozilla.org/en-US/docs/Web/API/Element|element} which value is
+     *            unmasked
+     * @returns {string} - Returns the unmasked value
      */
-    _this_.getUnmaskedValue = function(elem) {
+    that.getUnmaskedValue = function(elem) {
         var string = elem.value;
         var data = getDefaultData(elem.dataset);
-        var strict = _this_.UNDEF === typeof data[_this_.strict] ? true : data[_this_.strict];
+        var strict = that.UNDEF === typeof data[that.strict] ? true : data[that.strict];
         var i;
 
         var output = "";
-        for (i = 0; i < Math.max(string.length, data[_this_.mask].length); i += 1) {
+        for (i = 0; i < Math.max(string.length, data[that.mask].length); i += 1) {
             if (i >= string.length) {
                 break;
             }
-            if (i < data[_this_.mask].length) {
-                if (new RegExp(data[_this_.pattern]).test(string[i])) {
+            if (i < data[that.mask].length) {
+                if (new RegExp(data[that.pattern]).test(string[i])) {
                     output += string[i];
                 }
             } else {
@@ -384,7 +408,7 @@ function InputMask(config) {
 
         // if string longer than mask, get the rest fragment of string
         if (strict !== "true") {
-            output += string.slice(data[_this_.mask].length);
+            output += string.slice(data[that.mask].length);
         }
         return output;
     };
@@ -393,33 +417,123 @@ function InputMask(config) {
         init();
     }
 
-    return _this_;
+    return that;
 }
 
 // /////////////////////////////
 // class constants
 // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.UNDEF = "undefined";
+
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.name = "InputMaskPlugin";
+
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.CHAR = "character";
+
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.END = "end";
 
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.KEY_BKSP = "Backspace";
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.KEY_DEL = "Delete";
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.KEY_TAB = "Tab";
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.KEY_LEFT = "ArrowLeft";
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.KEY_RIGHT = "ArrowRight";
+
+/**
+ * @since 1.0
+ * @constant {string[]}
+ * @default
+ */
 InputMask.prototype.NAV_KEYS = [ "Shift", "Control", "Home", "End", "CapsLock", InputMask.prototype.KEY_LEFT,
         InputMask.prototype.KEY_RIGHT, InputMask.prototype.KEY_DEL, InputMask.prototype.KEY_BKSP, InputMask.prototype.KEY_TAB ];
 
+/**
+ * @since 1.0
+ * @constant {string[]}
+ * @default
+ */
 InputMask.prototype.PASTE_KEYS = [ "v", "V" ];
+/**
+ * @since 1.0
+ * @constant {string[]}
+ * @default
+ */
 InputMask.prototype.CUT_KEYS = [ "x", "X" ];
+/**
+ * @since 1.0
+ * @constant {string[]}
+ * @default
+ */
 InputMask.prototype.CTRL_FN_KEYS = [ "a", "A", "c", "C" ].concat(InputMask.prototype.PASTE_KEYS).concat(
         InputMask.prototype.CUT_KEYS);
 
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.pattern = "pattern";
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.strict = "strict";
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.mask = "mask";
+/**
+ * @since 1.0
+ * @constant {string}
+ * @default
+ */
 InputMask.prototype.plugin = "plugin";
 
 window["InputMask"] = InputMask;
